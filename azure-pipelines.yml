@@ -23,7 +23,7 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: true
-    arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
+    arguments: '--configuration Release --output $(System.DefaultWorkingDirectory)/publish'
     workingDirectory: '$(System.DefaultWorkingDirectory)/demo-taller'
 
 - task: DotNetCoreCLI@2
@@ -40,4 +40,4 @@ steps:
     azureSubscription: 'Azure subscription 1(d661f6b6-51be-46ec-a355-52db3499fb73)'
     appType: 'webApp'
     WebAppName: 'tallerKerlon'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/publish/**'
