@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  vmImage: 'windows-latest'
+  name: my_agent_pool_kerlon
 
 steps:
 - task: UseDotNet@2
