@@ -1,0 +1,46 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- task: UseDotNet@2
+  displayName: "Instalación SDK"
+  inputs:
+    packageType: 'sdk'
+    version: '8.0.x'
+
+- task: DotNetCoreCLI@2
+  displayName: "Compilación"
+  inputs:
+    azureSubscription: 'Azure subscription 1(d661f6b6-51be-46ec-a355-52db3499fb73)'
+    command: 'build'
+    projects: '*/.csproj'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/demo-taller'
+
+- task: DotNetCoreCLI@2
+  displayName: "Publicación"
+  inputs:
+    azureSubscription: 'Azure subscription 1(d661f6b6-51be-46ec-a355-52db3499fb73)'
+    command: 'publish'
+    publishWebProjects: true
+    arguments: '--configuration Release --output $(BuildArtifactStaningDirectory)'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/demo-taller'
+
+- task: DotNetCoreCLI@2
+  displayName: "Pruebas"
+  inputs:
+    azureSubscription: 'Azure subscription 1(d661f6b6-51be-46ec-a355-52db3499fb73)'
+    command: 'test'
+    projects: '*/Tests.csproj'
+    publishTestResults: true
+
+- task: AzureRmWebAppDeployment@5
+  displayName: "Despliegue"
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure subscription 1(d661f6b6-51be-46ec-a355-52db3499fb73)'
+    appType: 'webApp'
+    WebAppName: 'tallerKerlon'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
