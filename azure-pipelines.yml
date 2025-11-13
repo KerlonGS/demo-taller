@@ -40,4 +40,4 @@ steps:
     azureSubscription: 'Azure subscription 1(d661f6b6-51be-46ec-a355-52db3499fb73)'
     appType: 'webApp'
     WebAppName: 'tallerKerlon'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/demo-taller/bin/Release/net8.0/publish/**'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
